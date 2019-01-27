@@ -1,0 +1,42 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=10 format=2]
+
+[sub_resource type="AnimationNodeAnimation" id=9]
+
+animation = "Attack"
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+
+animation = "Idle"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+
+animation = "Run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=17]
+
+
+[resource]
+
+states/Attack/node = SubResource( 9 )
+states/Attack/position = Vector2( 489, 194 )
+states/Idle/node = SubResource( 10 )
+states/Idle/position = Vector2( 394, 103 )
+states/Run/node = SubResource( 11 )
+states/Run/position = Vector2( 597, 118 )
+transitions = [ "Idle", "Run", SubResource( 12 ), "Run", "Attack", SubResource( 13 ), "Attack", "Idle", SubResource( 14 ), "Attack", "Run", SubResource( 15 ), "Idle", "Attack", SubResource( 16 ), "Run", "Idle", SubResource( 17 ) ]
+

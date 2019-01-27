@@ -1,0 +1,159 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Mobile/Player/Player1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Mobile/Player/Player2_Animation_FSM.tres" type="AnimationNodeStateMachine" id=2]
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "Attack2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Rect2( 8, 88, 8, 8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Faceable/SpriteAttack:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "_attack_check"
+}, {
+"args": [  ],
+"method": "_attack_done"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "Idle2"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Rect2( 0, 88, 8, 8 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+
+resource_name = "Run2"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 8, 88, 8, 8 ), Rect2( 0, 88, 8, 8 ) ]
+}
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=4]
+
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+
+animation = "Attack2"
+
+[sub_resource type="AnimationNodeAnimation" id=6]
+
+animation = "Idle2"
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+
+animation = "Run2"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=10]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+
+
+[sub_resource type="AnimationNodeStateMachine" id=8]
+
+states/Attack/node = SubResource( 5 )
+states/Attack/position = Vector2( 488, 148 )
+states/Idle/node = SubResource( 6 )
+states/Idle/position = Vector2( 384, 71 )
+states/Run/node = SubResource( 7 )
+states/Run/position = Vector2( 635, 81 )
+transitions = [ "Idle", "Run", SubResource( 10 ), "Run", "Idle", SubResource( 11 ), "Idle", "Attack", SubResource( 12 ), "Attack", "Idle", SubResource( 13 ), "Run", "Attack", SubResource( 14 ), "Attack", "Run", SubResource( 15 ) ]
+graph_offset = Vector2( -2, -4 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=9]
+
+
+[node name="Player2" index="0" instance=ExtResource( 1 )]
+player = 2
+
+[node name="Sprite" parent="Faceable" index="0"]
+region_rect = Rect2( 0, 88, 8, 8 )
+
+[node name="SpriteAttack" parent="Faceable" index="1"]
+region_rect = Rect2( 16, 88, 8, 8 )
+
+[node name="AnimationPlayer" parent="." index="3"]
+anims/Attack2 = SubResource( 1 )
+anims/Idle2 = SubResource( 2 )
+anims/Run2 = SubResource( 3 )
+
+[node name="AnimationTree" parent="." index="4"]
+tree_root = ExtResource( 2 )
+active = false
+parameters/playback = SubResource( 4 )
+
+[node name="AnimationTree2" type="AnimationTree" parent="." index="5"]
+tree_root = SubResource( 8 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( 9 )
+

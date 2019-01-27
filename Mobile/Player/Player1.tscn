@@ -1,0 +1,201 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Mobile/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Tileset/Atlas.png" type="Texture" id=2]
+[ext_resource path="res://Sound/Swing.wav" type="AudioStream" id=3]
+[ext_resource path="res://Mobile/Player/Player1_Animation_FSM.tres" type="AnimationNodeStateMachine" id=4]
+[ext_resource path="res://Sound/JumpP1.wav" type="AudioStream" id=5]
+[ext_resource path="res://Sound/Hit_Hurt.wav" type="AudioStream" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+extents = Vector2( 1.73354, 4.0835 )
+
+[sub_resource type="CircleShape2D" id=2]
+
+radius = 1.36567
+
+[sub_resource type="RectangleShape2D" id=3]
+
+extents = Vector2( 4.46133, 4.26795 )
+
+[sub_resource type="Animation" id=4]
+
+resource_name = "Attack"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Rect2( 8, 80, 8, 8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Faceable/SpriteAttack:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "_attack_check"
+}, {
+"args": [  ],
+"method": "_attack_done"
+} ]
+}
+tracks/3/type = "audio"
+tracks/3/path = NodePath("AttackSound")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 3 )
+} ],
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=5]
+
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Rect2( 0, 80, 8, 8 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+
+resource_name = "Run"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 8, 80, 8, 8 ), Rect2( 0, 80, 8, 8 ) ]
+}
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=7]
+
+
+[sub_resource type="Animation" id=8]
+
+resource_name = "invul"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false, true ]
+}
+
+[node name="Player1" type="KinematicBody2D"]
+collision_layer = 2
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 2 )
+
+[node name="Faceable" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Faceable"]
+texture = ExtResource( 2 )
+offset = Vector2( 1, 0 )
+region_enabled = true
+region_rect = Rect2( 0, 80, 8, 8 )
+
+[node name="SpriteAttack" type="Sprite" parent="Faceable"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 6.59445, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 16, 80, 8, 8 )
+
+[node name="AttackTween" type="Tween" parent="Faceable"]
+
+[node name="AttackArea" type="Area2D" parent="Faceable"]
+position = Vector2( 6.55548, 0 )
+collision_layer = 4
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Faceable/AttackArea"]
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 4 )
+anims/Idle = SubResource( 5 )
+anims/Run = SubResource( 6 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = ExtResource( 4 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( 7 )
+
+[node name="InvulTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="InvulAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/invul = SubResource( 8 )
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+
+[connection signal="timeout" from="InvulTimer" to="." method="_on_InvulTimer_timeout"]

@@ -1,0 +1,132 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Mobile/Boss/Boss.gd" type="Script" id=1]
+[ext_resource path="res://Tileset/Atlas.png" type="Texture" id=2]
+[ext_resource path="res://Mobile/Boss/EyeBlackout.png" type="Texture" id=3]
+[ext_resource path="res://Mobile/Boss/Eye.png" type="Texture" id=4]
+[ext_resource path="res://Sound/Laser_Shoot.wav" type="AudioStream" id=5]
+[ext_resource path="res://Sound/Explosion.wav" type="AudioStream" id=6]
+[ext_resource path="res://Sound/Chink.wav" type="AudioStream" id=7]
+[ext_resource path="res://Sound/BossHit.wav" type="AudioStream" id=8]
+
+[sub_resource type="CircleShape2D" id=1]
+
+radius = 5.80356
+
+[sub_resource type="Animation" id=2]
+
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 47, 84, 48, 38 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Faceable/Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 0, 0, 40, 40 ), Rect2( 40, 0, 42, 40 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Faceable/EyeBlackout:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( -14.5, -12 ), Vector2( -15.5, -12 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Faceable/EyeSprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( -14.5, -12 ), Vector2( -15.5, -12 ) ]
+}
+
+[node name="Boss" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Faceable" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Faceable"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 47, 84, 48, 38 )
+
+[node name="FlyFirePosition" type="Position2D" parent="Faceable"]
+position = Vector2( -15.5974, -11.7473 )
+
+[node name="ForwardFirePosition" type="Position2D" parent="Faceable"]
+position = Vector2( 0, -11.107 )
+
+[node name="EyeBlackout" type="Sprite" parent="Faceable"]
+visible = false
+position = Vector2( -15.5, -12 )
+texture = ExtResource( 3 )
+
+[node name="EyeSprite" type="Sprite" parent="Faceable"]
+visible = false
+position = Vector2( -15.5, -12 )
+texture = ExtResource( 4 )
+
+[node name="HitBox" type="Area2D" parent="Faceable"]
+position = Vector2( -14.912, -11.9881 )
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Faceable/HitBox"]
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/FaceForward = SubResource( 2 )
+anims/Fly = SubResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 8.0
+
+[node name="EggDropTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AttacklSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+
+[node name="ExplodeSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+
+[node name="ChinkSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="EggDropTimer" to="." method="_on_EggDropTimer_timeout"]
