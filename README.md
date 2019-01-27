@@ -1,6 +1,12 @@
 # SuperChampionQuest
 Global Game Jam 2019 Submission
 
+# How to Run
+
+Start `SuperChampionQuest.exe` on Windows, `SuperChampionQuest.app` on OSX, or `./SuperChampionQuest` on Linux
+
+64-bit only
+
 # Plot
 
 Your home is under attack by a strange creature. Kill it to save the townsfolk and your family!
