@@ -28,3 +28,7 @@ R to Reset
 Player 1: WASD + Space
 
 Player 2: Up Down Left Right + Shift
+
+# License
+
+This software is licensed under the MIT license. See LICENSE.md
